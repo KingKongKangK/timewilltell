@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>○分後の時刻を簡単に計算｜無料・スマホ対応ツール</title>
+  <meta name="description" content="今の時刻と〇分後を入力するだけで、未来の時間を簡単に計算できるツール。スマホ対応・広告なし・無料で今すぐ使えます。">
+  <meta name="keywords" content="時刻計算, ○分後, 時間計算ツール, スマホ対応, 無料, 何分後の時間, 自動計算">
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      background-color: #f0f8ff;
+      padding: 20px;
+      text-align: center;
+    }
+    h1 {
+      font-size: 26px;
+      color: #333;
+    }
+    label, input, button {
+      font-size: 18px;
+      margin: 10px;
+    }
+    input, button {
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #ff69b4;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #ff85c1;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 22px;
+      color: #2e8b57;
+    }
+    #visitorCount {
+      margin-top: 30px;
+      font-size: 20px;
+      color: #ff69b4;
+    }
+  </style>
+</head>
+<body>
+  <h1>⏰ ○分後の時刻を計算する無料ツール</h1>
+  <p>今の時刻と何分後かを入力するだけ！未来の時刻を自動計算します。</p>
+
+  <label>現在の時刻：
+    <input type="time" id="currentTime">
+  </label><br>
+
+  <label>何分後？：
+    <input type="number" id="minutesLater" placeholder="例：100">
+  </label><br>
+
+  <button onclick="calculateTime()">計算する</button>
+
+  <h2 id="result"></h2>
+
+  <div id="visitorCount"></div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 現在時刻を初期入力
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      document.getElementById("currentTime").value = `${hh}:${mm}`;
+
+      // 訪問者カウント
+      let count = localStorage.getItem("visitorCount");
+      count = count ? parseInt(count, 10) + 1 : 1;
+      localStorage.setItem("visitorCount", count);
+      document.getElementById("visitorCount").innerText = `👀 あなたは ${count} 人目のお客様です。`;
+    });
+
+    function calculateTime() {
+      const timeInput = document.getElementById("currentTime").value;
+      const minutesToAdd = parseInt(document.getElementById("minutesLater").value, 10);
+
+      if (!timeInput || isNaN(minutesToAdd)) {
+        document.getElementById("result").innerText = "正しく入力してください。";
+        return;
+      }
+
+      const [hours, minutes] = timeInput.split(":").map(Number);
+      const date = new Date();
+      date.setHours(hours);
+      date.setMinutes(minutes + minutesToAdd);
+
+      const result = date.toTimeString().substring(0, 5);
+      document.getElementById("result").innerText = `${minutesToAdd}分後の時刻は ${result} です。`;
+    }
+  </script>
+</body>
+</html>
